@@ -1,5 +1,5 @@
 const checkLoggedIn = (ctx, next) => {
-  if (!ctx.state.teacher) {
+  if (!ctx.state.admin) {
     ctx.status = 401; // Unauthorized
     return;
   }

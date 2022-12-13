@@ -1,12 +1,12 @@
 import jwt from 'jsonwebtoken';
-import Teacher from '../models/teacher';
+import Admin from '../models/admin';
 
 const jwtMiddleware = async (ctx, next) => {
   const token = ctx.cookies.get('access_token');
   if (!token) return next(); // 토큰이 없음
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    ctx.state.teacher = {
+    ctx.state.admin = {
       id: decoded.id,
       type: decoded.type,
     };
@@ -14,8 +14,8 @@ const jwtMiddleware = async (ctx, next) => {
     // 토큰의 남은 유효 기간이 3.5일 미만이면 재발급
     const now = Math.floor(Date.now() / 1000);
     if (decoded.exp - now < 60 * 60 * 24 * 3.5) {
-      const teacher = await Teacher.findById(decoded._id);
-      const token = teacher.generateToken();
+      const admin = await Admin.findById(decoded._id);
+      const token = admin.generateToken();
       ctx.cookies.set('access_token', token, {
         maxAge: 1000 * 60 * 60 * 24 * 7, // 7일
         httpOnly: true,
