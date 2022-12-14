@@ -66,7 +66,6 @@ export const read = async (ctx) => {
 export const update = async (ctx) => {
   const { _id } = ctx.params;
 
-  // write에서 사용한 schema와 비슷한데, required()가 없습니다.
   const schema = Joi.object().keys({
     imageUrlPc: Joi.string(),
     imageUrlMo: Joi.string(),
