@@ -4,7 +4,8 @@ import Joi from '@hapi/joi';
 /*
   POST /api/content
   {
-    "imageUrl" : "",
+    "imageUrlPc" : "",
+    "imageUrlMo" : "",
     "text" : "",
     "publishedDate" : new Date()
   }
@@ -12,7 +13,8 @@ import Joi from '@hapi/joi';
 export const write = async (ctx) => {
   const schema = Joi.object().keys({
     // 객체가 다음 필드를 가지고 있음을 검증
-    imageUrl: Joi.string().required().allow(null, ''), // required()가 있으면 필수 항목
+    imageUrlPc: Joi.string().required().allow(null, ''), // required()가 있으면 필수 항목
+    imageUrlMo: Joi.string().required().allow(null, ''), // required()가 있으면 필수 항목
     text: Joi.string().required().allow(null, ''),
     publishedDate: Joi.date().required(),
   });
@@ -55,7 +57,8 @@ export const read = async (ctx) => {
 /*
   PATCH /api/content/:_id
   { 
-    "imageUrl" : "",
+    "imageUrlPc" : "",
+    "imageUrlMo" : "",
     "text" : "",
     "publishedDate" : new Date()
   }
@@ -65,7 +68,8 @@ export const update = async (ctx) => {
 
   // write에서 사용한 schema와 비슷한데, required()가 없습니다.
   const schema = Joi.object().keys({
-    imageUrl: Joi.string(),
+    imageUrlPc: Joi.string(),
+    imageUrlMo: Joi.string(),
     text: Joi.string(),
     publishedDate: Joi.date().required(),
   });

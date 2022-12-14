@@ -4,6 +4,7 @@ const userSchema = new Schema({
   name: String,
   hp: String,
   branch: String,
+  ip: String,
   publishedDate: Date,
 });
 

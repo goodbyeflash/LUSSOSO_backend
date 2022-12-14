@@ -1,10 +1,13 @@
-import Content from '../../models/content';
+import User from '../../models/user';
 import excel from 'exceljs';
 
 export const download = async (ctx) => {
-  const { columns, rows } = ctx.request.body;
+  const { columns } = ctx.request.body;
 
   let rowArray = [];
+
+  const rows = await User.find({}).exec();
+
   rows.forEach((row) => {
     row.publishedDate = new Date(row.publishedDate).YYYYMMDDHHMMSS();
     rowArray.push(row);
@@ -25,24 +28,6 @@ export const download = async (ctx) => {
     await workbook.xlsx.write(ctx.res).then(() => {
       ctx.res.end();
     });
-  } catch (error) {
-    ctx.throw(500, error);
-  }
-};
-
-export const sortContent = async (ctx) => {
-  const { sortKey } = ctx.request.body;
-
-  // key가 없으면 에러 처리
-  if (!sortKey) {
-    ctx.status = 401; // Unteacherorized
-    return;
-  }
-
-  try {
-    let contents = await Content.find({}).exec();
-    contents = contents.map((content) => content.toJSON());
-    contents.sort(arrOrder(sortKey));
   } catch (error) {
     ctx.throw(500, error);
   }

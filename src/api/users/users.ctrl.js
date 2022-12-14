@@ -2,6 +2,7 @@ import User from '../../models/user';
 import mongoose from 'mongoose';
 import Joi from '@hapi/joi';
 import requsetIp from 'request-ip';
+import moment from 'moment';
 
 const { ObjectId } = mongoose.Types;
 
@@ -29,7 +30,7 @@ export const getUserById = async (ctx, next) => {
   POST /api/users
   {
     "name" : "유저",
-    "hp" : "01011114444",
+    "hp" : 01011114444,
     "branch" : "지점",
     "publishedDate" : new Date()
   }
@@ -51,6 +52,19 @@ export const write = async (ctx) => {
     return;
   }
   const { name, hp, branch, publishedDate } = ctx.request.body;
+
+  const exist = await User.findOne({
+    hp: hp,
+    publishedDate: {
+      $gte: new Date(moment(publishedDate).startOf('day').format()),
+      $lt: new Date(moment(publishedDate).endOf('day').format()),
+    },
+  });
+
+  if (exist) {
+    ctx.status = 409;
+    return;
+  }
 
   let ip = requsetIp.getClientIp(ctx.request);
 
@@ -109,7 +123,6 @@ export const read = async (ctx) => {
 
   try {
     const user = await User.findById(_id).exec();
-    console.log(User);
     if (!user) {
       ctx.status = 404;
       return;

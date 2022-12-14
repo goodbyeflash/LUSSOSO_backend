@@ -1,7 +1,8 @@
 import mongoose, { Schema } from 'mongoose';
 
 const contentSchema = new Schema({
-  imageUrl: String,
+  imageUrlPc: String,
+  imageUrlMo: String,
   text: String,
   publishedDate: Date,
 });
