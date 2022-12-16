@@ -32,10 +32,7 @@ app.use(serve('../frontend/build'));
 router.use('/api', api.routes()); // api 라우트 적용
 
 app.use(async (ctx, next) => {
-  const corsWhitelist = [
-    'http://localhost:8080',
-    'http://www.publicdesign.co.kr',
-  ];
+  const corsWhitelist = ['http://localhost:8080', 'http://lussosoevent.co.kr'];
   if (corsWhitelist.indexOf(ctx.request.headers.origin) !== -1) {
     ctx.set('Access-Control-Allow-Origin', ctx.request.headers.origin);
     ctx.set(
